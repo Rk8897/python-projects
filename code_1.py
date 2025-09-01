@@ -1,63 +1,70 @@
-def add(a, b):
-    return a + b
+class Calculator:
+    """
+    A simple calculator class supporting basic arithmetic operations.
+    """
 
-def subtract(a, b):
-    return a - b
+    def add(self, a, b):
+        return a + b
 
-def multiply(a, b):
-    return a * b
+    def subtract(self, a, b):
+        return a - b
 
-def divide(a, b):
-    if b == 0:
-        return "Error: Division by zero"
-    return a / b
+    def multiply(self, a, b):
+        return a * b
 
-def power(a, b):
-    return a ** b
+    def divide(self, a, b):
+        if b == 0:
+            return "Error: Division by zero"
+        return a / b
 
-def modulus(a, b):
-    return a % b
+    def power(self, a, b):
+        return a ** b
 
-def calculator():
+    def modulus(self, a, b):
+        if b == 0:
+            return "Error: Division by zero in modulus"
+        return a % b
+
+def get_number(prompt):
+    """
+    Prompt the user for a number and handle invalid input.
+    """
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+
+def main():
+    calc = Calculator()
+    operations = {
+        "1": ("Addition", calc.add),
+        "2": ("Subtraction", calc.subtract),
+        "3": ("Multiplication", calc.multiply),
+        "4": ("Division", calc.divide),
+        "5": ("Power", calc.power),
+        "6": ("Modulus", calc.modulus)
+    }
+
     print("\n--- Python Calculator ---")
-    print("1. Addition (+)")
-    print("2. Subtraction (-)")
-    print("3. Multiplication (*)")
-    print("4. Division (/)")
-    print("5. Power (**)")
-    print("6. Modulus (%)")
+    for key, (name, _) in operations.items():
+        print(f"{key}. {name}")
     print("7. Exit")
 
     while True:
         choice = input("\nEnter choice (1-7): ")
-
         if choice == "7":
             print("Exiting... Goodbye 👋")
             break
-
-        if choice not in ["1","2","3","4","5","6"]:
+        if choice not in operations:
             print("Invalid choice! Try again.")
             continue
 
-        try:
-            num1 = float(input("Enter first number: "))
-            num2 = float(input("Enter second number: "))
-        except ValueError:
-            print("Please enter valid numbers!")
-            continue
-
-        if choice == "1":
-            print("Result:", add(num1, num2))
-        elif choice == "2":
-            print("Result:", subtract(num1, num2))
-        elif choice == "3":
-            print("Result:", multiply(num1, num2))
-        elif choice == "4":
-            print("Result:", divide(num1, num2))
-        elif choice == "5":
-            print("Result:", power(num1, num2))
-        elif choice == "6":
-            print("Result:", modulus(num1, num2))
+        num1 = get_number("Enter first number: ")
+        num2 = get_number("Enter second number: ")
+        operation_name, operation_func = operations[choice]
+        result = operation_func(num1, num2)
+        print(f"{operation_name} result: {result}")
 
 if __name__ == "__main__":
-    calculator()
+    main()
